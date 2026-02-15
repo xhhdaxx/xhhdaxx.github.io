@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Playfair Display', serif;
+      position: relative;
+    }
+
+    /* 动态光晕背景 */
+    body::before {
+      content: '';
+      position: absolute;
+      width: 150vw;
+      height: 150vw;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(-30%, -30%) rotate(0deg); }
+      33% { transform: translate(20%, -20%) rotate(120deg); }
+      66% { transform: translate(-20%, 20%) rotate(240deg); }
+    }
+
+    /* 网格纹理 */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .text-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* 装饰性光晕 */
+    .text-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      filter: blur(60px);
+      pointer-events: none;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    /* 文字样式 */
+    .main-text {
+      font-size: clamp(28px, 6vw, 56px);
+      font-weight: 400;
+      color: #f5f5f5;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      position: relative;
+      opacity: 0;
+      animation: reveal 1.5s ease forwards;
+    }
+
+    .main-text span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px) rotateX(-20deg);
+      animation: wordReveal 0.8s ease forwards;
+    }
+
+    /* 每个单词的延迟 */
+    .main-text span:nth-child(1) { animation-delay: 0.3s; }
+    .main-text span:nth-child(2) { animation-delay: 0.5s; }
+    .main-text span:nth-child(3) { animation-delay: 0.7s; }
+    .main-text span:nth-child(4) { animation-delay: 0.9s; }
+
+    @keyframes wordReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+
+    @keyframes reveal {
+      to { opacity: 1; }
+    }
+
+    /* 斜体装饰 */
+    .main-text .italic {
+      font-style: italic;
+      color: #ffffff;
+    }
+
+    /* 下方装饰线 */
+    .decoration {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 40px;
+      opacity: 0;
+      animation: reveal 1.5s ease 1.2s forwards;
+    }
+
+    .line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      background: #ffffff;
+      border-radius: 50%;
+    }
+
+    /* 鼠标跟随效果 */
+    .cursor-glow {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      .content {
+        padding: 24px;
+      }
+
+      .main-text {
+        font-size: clamp(22px, 8vw, 36px);
+      }
+
+      .decoration {
+        margin-top: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-glow"></div>
+
+  <div class="content">
+    <div class="text-wrapper">
+      <h1 class="main-text">
+        <span>This</span> <span>is</span> <span>a</span> <span class="italic">personal</span> <span>page.</span>
+      </h1>
+    </div>
+    <div class="decoration">
+      <span class="line"></span>
+      <span class="dot"></span>
+      <span class="line"></span>
+    </div>
+  </div>
+
+  <script>
+    // 鼠标跟随效果
+    const glow = document.querySelector('.cursor-glow');
+
+    document.addEventListener('mousemove', (e) => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+    });
+
+    // 鼠标离开时隐藏
+    document.addEventListener('mouseleave', () => {
+      glow.style.opacity = '0';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      glow.style.opacity = '1';
+    });
+  </script>
+</body>
+</html>
